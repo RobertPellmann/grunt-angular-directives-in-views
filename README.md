@@ -79,8 +79,8 @@ Example:
 </html>
 ```
 
-In this example you would have &lt;dynmaic&gt; within your view and the parser would identity it as an unknown directive.
-To avoid such confusion, you add those special tags to the ignoreTag Array:
+In this example you would have &lt;dynamic&gt; within your view and the parser would identity it as an unknown directive.
+To avoid such confusion, you have to add those special tags to the ignoreTag Array:
 
 ```js
 grunt.initConfig({
