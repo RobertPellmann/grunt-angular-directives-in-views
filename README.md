@@ -39,17 +39,62 @@ grunt.initConfig({
 
 #### options.suppressOutput
 Type: `Boolean`
-Default value: false
+Default value: `false`
 
 If set to true all consol output regarding the view analysis is suppressed.
 
 #### options.suppressOutputFile
 Type: `Boolean`
-Default value: false
+Default value: `false`
 
 Every target will create a file in a tmp directory next to the gruntfile with the file name set to the target name.
 This is usefull if the information is too much for the console.
 Set to false, if you do not wish to create those files.
+
+#### options.ignoreTags
+Type: `Array[String]`
+Default value: `[]`
+
+If you have tags that are neither html nor angular tags, you can specify them in this array.
+
+Example:
+
+```html
+@using Razor
+
+@inherits RazorViewBase<dynamic>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <hello-world></hello-world>
+    </div>
+</body>
+</html>
+```
+
+In this example you would have &lt;dynmaic&gt; within your view and the parser would identity it as an unknown directive.
+To avoid such confusion, you add those special tags to the ignoreTag Array:
+
+```js
+grunt.initConfig({
+  angular_directives_in_views: {
+    my_views: {
+        views: ['views/test.html'],
+        angular: ['scripts/angular-directives.js'],
+        options: {
+          ignoreTags: ['dynamic']
+        }
+      }
+  }
+})
+```
 
 ### Usage Examples
 

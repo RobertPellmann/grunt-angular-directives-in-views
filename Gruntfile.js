@@ -47,6 +47,13 @@ module.exports = function(grunt) {
         options: {
           suppressOutput: true
         }
+      },
+      view_ignore_invalid_tag: {
+        views: ['test/fixtures/razor.cshtml'],
+        angular: ['test/fixtures/angular-directives.js'],
+        options: {
+          ignoreTags: ['dynamic']
+        }
       }
     },
 

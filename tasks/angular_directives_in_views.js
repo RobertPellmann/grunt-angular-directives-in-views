@@ -11,7 +11,8 @@
 module.exports = function(grunt) {
   var _ = require('lodash')
   var htmlparser = require("htmlparser2")
-  var htmlTags = ['div']
+  // taken from https://www.w3schools.com/tags/
+  var htmlTags = ['!DOCTYPE', 'a', 'abbr', 'acronym', 'address', 'applet', 'area', 'article', 'aside', 'autio', 'b', 'base', 'basefont', 'bdi', 'bdo', 'big', 'blockquote','body','br','button','canvas','caption','center','cite','code','col','colgroup','datalist','dd','del','details','dfn','dialog','dir','div','dl','dt','em','embed','fieldset','figcaption','figure','font','footer','form','frame','frameset','h1','h2','h3','h4','h5','h6','head','header','hr','html','i','iframe','img','input','ins','kbd','label','legend','li','link','main','map','mark','menu','menuitem','meta','meter','nav','noframes','noscript','object','ol','optgroup','option','output','p','picture','pre','progress','q','rp','rt','ruby','s','samp','script','section','select','small','source','span','strike','strong','style','sub','summary','sup','table','tbody','td','textarea','tfoot','th','thead','time','title','tr','track','tt','u','ul','var','video','wbr']
 
   function getNormalizedFile(filepath) {
     return grunt.util.normalizelf(grunt.file.read(filepath));
@@ -46,6 +47,11 @@ module.exports = function(grunt) {
       grunt.file.warn('If you want to specify the location of the output log file for target ' + target + ', it has to be a string')
     }
   }
+  function validateIgnoreTags(ignoreTags) {
+    if(grunt.util.kindOf(ignoreTags) !== 'array') {
+      grunt.fail.warn('options.ignoreTags must be a string array containing the tag names.')
+    }
+  }
 
   function isHtmlTagName(name) {
     return _.find(htmlTags, function(htmlTag) {
@@ -55,7 +61,7 @@ module.exports = function(grunt) {
 
   
   function normalizeDirectiveName(name) {
-    var directiveNameRegex = new RegExp(/[a-z][a-z0-9]*|[A-Z][a-z0-9]*/,'g')
+    var directiveNameRegex = /[a-z][a-z0-9]*|[A-Z][a-z0-9]*/g
     var result, normalizedName
     while((result = directiveNameRegex.exec(name)) !== null) {
       if(normalizedName === undefined) {
@@ -82,15 +88,21 @@ module.exports = function(grunt) {
         angular = data.angular, 
         log = 'tmp/' + target,
         directives = [],
-        directiveRegEx = new RegExp(/directive\(["']\w*["']/, 'g')
+        directiveRegEx = /directive\(["']\w*["']/g
     function isAngularDirective(name) {
       return _.find(directives, function(directive) {
         return directive == name
       }) !== undefined
     }
+    function isIgnoredTag(name) {
+      return _.find(options.ignoreTags, function(tagName) {
+        return tagName == name
+      }) !== undefined
+    }
     var options = this.options({
       suppressOutput: false,
-      suppressOutputFile: false
+      suppressOutputFile: false,
+      ignoreTags: []
     })
     // overrdie default configuration
     if(data.viewExtension !== undefined) {
@@ -104,6 +116,7 @@ module.exports = function(grunt) {
     validateViewExtension(viewExtension)
     validateAngular(angular, target)
     validateLog(log, target)
+    validateIgnoreTags(options.ignoreTags)
     // parse directives
     _(angular)
     .filter(function(angularFilePath) {
@@ -146,7 +159,7 @@ module.exports = function(grunt) {
     .forEach(function(viewFile) {
       var parser = new htmlparser.Parser({
         onopentag: function(name, attributes) {
-          if(!isHtmlTagName(name) && !isAngularDirective(name)) {
+          if(!isIgnoredTag(name) && !isHtmlTagName(name) && !isAngularDirective(name)) {
             if(!options.suppressOutputFile) {
               grunt.file.write(log, 'unknown directive <' + name + '> in ' + viewFile.file  + '\r\n')
             }

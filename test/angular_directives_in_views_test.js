@@ -49,9 +49,9 @@ exports.angular_directives_in_views = {
     test.equal(actual, 'unknown directive <holla-world> in test/fixtures/view-invalid-one.html\r\n')
     test.done()
   },
-  view_razor: function(test) {
+  view_ignore_invalid_tag: function(test) {
     test.expect(1)
-    test.equal(grunt.file.exists('tmp/view_razor'), false)
+    test.equal(grunt.file.exists('tmp/view_ignore_invalid_tag'), false)
     test.done()
   }
 }
