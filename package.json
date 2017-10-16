@@ -1,0 +1,40 @@
+{
+  "name": "angular-directives-in-views",
+  "description": "Scannes .js files for angular directives to make sure directives in (html) views are defined.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/RobertPellmann/grunt-angular-directives-in-views",
+  "author": {
+    "name": "Robert Pellmann",
+    "email": "pellmann@softwert.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/RobertPellmann/grunt-angular-directives-in-views.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RobertPellmann/grunt-angular-directives-in-views/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/RobertPellmann/grunt-angular-directives-in-views/blob/master/LICENSE-MIT"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "^0.9.2",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-nodeunit": "^0.3.3",
+    "grunt": "~0.4.5",
+    "lodash": "^4.17.4",
+    "htmlparser2":"^3.9.2"
+  },
+  "keywords": [
+    "gruntplugin"
+  ]
+}
