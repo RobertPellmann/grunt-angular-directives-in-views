@@ -72,6 +72,13 @@ module.exports = function(grunt) {
         options: {
           viewExtensions: '*'
         }
+      },
+      view_scan_sub_directory: {
+        views: ['test/fixtures/views/'],
+        angular: ['test/fixtures/angular-directives.js'],
+        options: {
+          viewExtensions: ['cshtml']
+        }
       }
     },
 

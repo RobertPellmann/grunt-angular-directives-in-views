@@ -61,13 +61,21 @@ exports.angular_directives_in_views = {
   },
   view_scan_directory_cshtml: function(test) {
     test.expect(1)
-    test.equal(grunt.file.exists('tmp/view_scan_directory_cshtml'), false)
+    var actual = getNormalizedFile('tmp/view_scan_directory_cshtml')
+    test.ok(actual.indexOf('unknown directive <holla-world> in test/fixtures/views/subviews/subview.cshtml') > -1)
     test.done()
   },
   view_scan_directory_all: function(test) {
-    test.expect(1)
+    test.expect(2)
     var actual = getNormalizedFile('tmp/view_scan_directory_all')
-    test.equal(actual, "unknown directive <hello-world-blub> in test/fixtures/views/view3.txt\r\n")
+    test.ok(actual.indexOf('unknown directive <hello-world-blub> in test/fixtures/views/view3.txt') > -1)
+    test.ok(actual.indexOf('unknown directive <holla-world> in test/fixtures/views/subviews/subview.cshtml') > -1)
+    test.done()
+  },
+  view_scan_sub_directory: function(test) {
+    test.expect(1)
+    var actual = getNormalizedFile('tmp/view_scan_sub_directory')
+    test.ok(actual.indexOf('unknown directive <holla-world> in test/fixtures/views/subviews/subview.cshtml') > -1)
     test.done()
   }
 }

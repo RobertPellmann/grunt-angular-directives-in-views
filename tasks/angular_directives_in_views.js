@@ -113,7 +113,7 @@ module.exports = function(grunt) {
         else {
           var splittedFileName = fileName.split('.')
           if(splittedFileName.length > 0) {
-            var fileExtension = splittedFileName[splittedFileName.lenght - 1]
+            var fileExtension = splittedFileName[splittedFileName.length - 1]
             return _(options.viewExtensions).find(function(viewExtension) {
               return fileExtension == viewExtension
             }) !== undefined
@@ -165,6 +165,7 @@ module.exports = function(grunt) {
     }
     var viewFiles = _.filter(views, function(view) { return !isDirectory(view)})
     var viewDirectories = _.filter(views,function(view) { return isDirectory(view)})
+    var errors = []
     // read views
     function viewExists(viewFilePath) {
       if(!grunt.file.exists(viewFilePath)) {
@@ -182,12 +183,7 @@ module.exports = function(grunt) {
       var parser = new htmlparser.Parser({
         onopentag: function(name, attributes) {
           if(!isIgnoredTag(name) && !isHtmlTagName(name) && !isAngularDirective(name)) {
-            if(!options.suppressOutputFile) {
-              grunt.file.write(log, 'unknown directive <' + name + '> in ' + viewFile.file  + '\r\n')
-            }
-            if(!options.suppressOutput) {
-              grunt.log.error('unknown directive <' + name + '> in ' + viewFile.file)
-            }
+            errors.push('unknown directive <' + name + '> in ' + viewFile.file  + '\r\n')
           }
         }
       })
@@ -213,7 +209,6 @@ module.exports = function(grunt) {
     function processDirectories(directories) {
       _(directories)
       .forEach(function(viewDirectory) {
-        grunt.log.writeln('process: '+ viewDirectory )
         grunt.file.recurse(viewDirectory, function(abspath, rootdir, subdir, filename) {
           if(fileHasValidExtenion(filename)) {
             processView(abspath)
@@ -223,5 +218,13 @@ module.exports = function(grunt) {
     }
     processViews(viewFiles)
     processDirectories(viewDirectories)
+    if(!options.suppressOutput) {
+      _.forEach(errors, function(error) {
+        grunt.log.error(error)
+      })
+    }
+    if(!options.suppressOutputFile && errors.length > 0) {
+      grunt.file.write(log, _.join(errors,''))
+    }
   })
 }

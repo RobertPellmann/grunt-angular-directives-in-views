@@ -1,2 +1,2 @@
 directive('helloWorld', function() {})
-directive('joyFull', function( {}))
+directive('joyFull', function() {})
