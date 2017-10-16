@@ -2,6 +2,8 @@
 
 > Scans .js files for angular directives to make sure directives in (html) views are defined.
 
+Attention: This plugin is for directives from Angular 1.x. It will not work with Angular > 1.x.
+
 ## Getting Started
 This plugin requires Grunt `~0.4.5`
 

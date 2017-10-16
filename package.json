@@ -1,6 +1,6 @@
 {
   "name": "angular-directives-in-views",
-  "description": "Scannes .js files for angular directives to make sure directives in (html) views are defined.",
+  "description": "Scans .js files for angular directives to make sure directives in (html) views are defined. Only for angularjs 1.x",
   "version": "0.1.0",
   "homepage": "https://github.com/RobertPellmann/grunt-angular-directives-in-views",
   "author": {
@@ -35,6 +35,9 @@
     "htmlparser2":"^3.9.2"
   },
   "keywords": [
-    "gruntplugin"
+    "gruntplugin",
+	"angular",
+	"angularjs",
+	"directive"
   ]
 }
