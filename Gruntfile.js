@@ -43,7 +43,10 @@ module.exports = function(grunt) {
       },
       view_invalid_one: {
         views: ['test/fixtures/view-invalid-one.html'],
-        angular: ['test/fixtures/angular-directives.js']
+        angular: ['test/fixtures/angular-directives.js'],
+        options: {
+          suppressOutput: true
+        }
       }
     },
 

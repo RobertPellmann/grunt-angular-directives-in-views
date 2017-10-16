@@ -37,53 +37,38 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
-Type: `String`
-Default value: `',  '`
+#### options.suppressOutput
+Type: `Boolean`
+Default value: false
 
-A string value that is used to do something with whatever.
+If set to true all consol output regarding the view analysis is suppressed.
 
-#### options.punctuation
-Type: `String`
-Default value: `'.'`
+#### options.suppressOutputFile
+Type: `Boolean`
+Default value: false
 
-A string value that is used to do something else with whatever else.
+Every target will create a file in a tmp directory next to the gruntfile with the file name set to the target name.
+This is usefull if the information is too much for the console.
+Set to false, if you do not wish to create those files.
 
 ### Usage Examples
 
-#### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
-
 ```js
 grunt.initConfig({
   angular_directives_in_views: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
-```
-
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
-
-```js
-grunt.initConfig({
-  angular_directives_in_views: {
-    options: {
-      separator: ': ',
-      punctuation: ' !!!',
-    },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
+    my_views: {
+        views: ['views/test.html'],
+        angular: ['scripts/angular-directives.js'],
+        options: {
+          suppressOutput: true
+        }
+      }
+  }
+})
 ```
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-_(Nothing yet)_
+16.10.2017: First somewhat working version.

@@ -88,6 +88,10 @@ module.exports = function(grunt) {
         return directive == name
       }) !== undefined
     }
+    var options = this.options({
+      suppressOutput: false,
+      suppressOutputFile: false
+    })
     // overrdie default configuration
     if(data.viewExtension !== undefined) {
       viewExtension = data.viewExtension
@@ -137,17 +141,22 @@ module.exports = function(grunt) {
         return true
       }
     }).map(function(viewFilePath) {
-      return getNormalizedFile(viewFilePath)
+      return { file: viewFilePath, content: getNormalizedFile(viewFilePath) } 
     })
-    .forEach(function(viewFileContent) {
+    .forEach(function(viewFile) {
       var parser = new htmlparser.Parser({
         onopentag: function(name, attributes) {
           if(!isHtmlTagName(name) && !isAngularDirective(name)) {
-            grunt.file.write(log, 'unknown directive <' + name + '>\n')
+            if(!options.suppressOutputFile) {
+              grunt.file.write(log, 'unknown directive <' + name + '> in ' + viewFile.file  + '\r\n')
+            }
+            if(!options.suppressOutput) {
+              grunt.log.error('unknown directive <' + name + '> in ' + viewFile.file)
+            }
           }
         }
       })
-      parser.write(viewFileContent)
+      parser.write(viewFile.content)
     })
   })
 }

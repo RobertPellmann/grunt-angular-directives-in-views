@@ -35,7 +35,7 @@ exports.angular_directives_in_views = {
   view_simple_invalid: function(test) {
     test.expect(1)
     var actual = getNormalizedFile('tmp/view_simple_invalid')
-    test.equal(actual, 'unknown directive <holla-world>\r\n')
+    test.equal(actual, 'unknown directive <holla-world> in test/fixtures/view-invalid.html\r\n')
     test.done()
   },
   view_multiple: function(test) {
@@ -45,8 +45,8 @@ exports.angular_directives_in_views = {
   },
   view_invalid_one: function(test) {
     test.expect(1)
-    var actual = getNormalizedFile('tmp/view_simple_invalid')
-    test.equal(actual, 'unknown directive <holla-world>\r\n')
+    var actual = getNormalizedFile('tmp/view_invalid_one')
+    test.equal(actual, 'unknown directive <holla-world> in test/fixtures/view-invalid-one.html\r\n')
     test.done()
   },
   view_razor: function(test) {
