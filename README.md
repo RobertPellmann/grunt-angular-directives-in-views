@@ -16,8 +16,12 @@ npm install angular-directives-in-views --save-dev
 Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
 
 ```js
-grunt.loadNpmTasks('angular-directives-in-views');
+grunt.loadNpmTasks('grunt-angular-directives-in-views')
 ```
+
+## Version ##
+
+0.1.1
 
 ## The "angular_directives_in_views" task
 
@@ -32,9 +36,11 @@ grunt.initConfig({
     },
     your_target: {
       // Target-specific file lists and/or options go here.
-    },
-  },
-});
+    }
+  }
+})
+grunt.loadNpmTasks('grunt-angular-directives-in-views')
+grunt.registerTask('default', ['angular_directives_in_views'])
 ```
 
 ### Options
