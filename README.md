@@ -7,6 +7,7 @@ This plugin requires Grunt `~0.4.5`
 
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
 
+<!--
 ```shell
 npm install angular-directives-in-views --save-dev
 ```
@@ -16,6 +17,8 @@ Once the plugin has been installed, it may be enabled inside your Gruntfile with
 ```js
 grunt.loadNpmTasks('angular-directives-in-views');
 ```
+-->
+For the time being there is no npm support.
 
 ## The "angular_directives_in_views" task
 
@@ -95,6 +98,34 @@ grunt.initConfig({
   }
 })
 ```
+
+#### options.viewExtensions ####
+
+Type: `Array[String]` or `*`
+Default value: `['html']`
+
+If you use directories in your views argument and you want to use different views than html views, you have to
+override this option.
+If you provide an array you give the task a whitelist of acceptable extensions.
+If you want the task to pick anything up regardless of extension, you can set it to '*'.
+
+```js
+grunt.initConfig({
+  angular_directives_in_views: {
+    my_views: {
+        views: ['views/'],
+        angular: ['scripts/angular-directives.js'],
+        options: {
+          viewExtensions: ['html','txt']
+        }
+      }
+  }
+})
+```
+
+### Important note ###
+
+If you want to use directories in the views argument, then the string MUST HAVE a trailing slash, e.g. views/
 
 ### Usage Examples
 

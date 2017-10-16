@@ -42,11 +42,6 @@ module.exports = function(grunt) {
     }
   }
 
-  function validateLog(log, target) {
-    if(grunt.util.kindOf(log) !== 'string') {
-      grunt.file.warn('If you want to specify the location of the output log file for target ' + target + ', it has to be a string')
-    }
-  }
   function validateIgnoreTags(ignoreTags) {
     if(grunt.util.kindOf(ignoreTags) !== 'array') {
       grunt.fail.warn('options.ignoreTags must be a string array containing the tag names.')
@@ -77,6 +72,17 @@ module.exports = function(grunt) {
     return normalizedName
   }
 
+  function isDirectory(path) {
+    if(path !== undefined && path !== null && path.length > 0) {
+      var lastCharacterIsSlash = path[path.length - 1] == '/'
+      //grunt.log.writeln('path:' + path + ', isDirectory:' + lastCharacterIsSlash)
+      return lastCharacterIsSlash
+    }
+    else {
+      grunt.log.warn(value + ' is not a valid directory path')
+    }
+  }
+
   // Please see the Grunt documentation for more information regarding task
   // creation: http://gruntjs.com/creating-tasks
 
@@ -99,23 +105,38 @@ module.exports = function(grunt) {
         return tagName == name
       }) !== undefined
     }
+    function fileHasValidExtenion(fileName) {
+      if(fileName !== undefined && fileName !== null && fileName !== '') {
+        if(options.viewExtensions == '*') {
+          return true
+        }
+        else {
+          var splittedFileName = fileName.split('.')
+          if(splittedFileName.length > 0) {
+            var fileExtension = splittedFileName[splittedFileName.lenght - 1]
+            return _(options.viewExtensions).find(function(viewExtension) {
+              return fileExtension == viewExtension
+            }) !== undefined
+          }
+          else {
+            grunt.log.error(fileName + ' has not an extension')
+          }
+        }
+      }
+      else {
+        grunt.log.warn(fileName + 'is not a valid file name.')
+      }
+    }
     var options = this.options({
       suppressOutput: false,
       suppressOutputFile: false,
-      ignoreTags: []
+      ignoreTags: [],
+      viewExtensions: ['html']
     })
-    // overrdie default configuration
-    if(data.viewExtension !== undefined) {
-      viewExtension = data.viewExtension
-    }
-    if(data.log !== undefined) {
-      log = data.log
-    }
     // check configuration
     validateViews(views, target)
     validateViewExtension(viewExtension)
     validateAngular(angular, target)
-    validateLog(log, target)
     validateIgnoreTags(options.ignoreTags)
     // parse directives
     _(angular)
@@ -134,7 +155,6 @@ module.exports = function(grunt) {
     .forEach(function(angularFileContent){
       var result
       while((result = directiveRegEx.exec(angularFileContent)) !== null) {
-        
         var directiveEndIndex = directiveRegEx.lastIndex - 1,
             directiveName = result[0].substring(11, directiveEndIndex)
         directives.push(normalizeDirectiveName(directiveName))
@@ -143,9 +163,10 @@ module.exports = function(grunt) {
     if(directives.length == 0) {
       grunt.log.write('No directives where found in the angular files for target ' + target + '.')
     }
+    var viewFiles = _.filter(views, function(view) { return !isDirectory(view)})
+    var viewDirectories = _.filter(views,function(view) { return isDirectory(view)})
     // read views
-    _(views)
-    .filter(function(viewFilePath) {
+    function viewExists(viewFilePath) {
       if(!grunt.file.exists(viewFilePath)) {
         grunt.log.warn('View source file "' + viewFilePath + '" not found.')
         return false
@@ -153,10 +174,11 @@ module.exports = function(grunt) {
       else {
         return true
       }
-    }).map(function(viewFilePath) {
+    }
+    function getViewContent(viewFilePath) {
       return { file: viewFilePath, content: getNormalizedFile(viewFilePath) } 
-    })
-    .forEach(function(viewFile) {
+    }
+    function parseViewFile(viewFile) {
       var parser = new htmlparser.Parser({
         onopentag: function(name, attributes) {
           if(!isIgnoredTag(name) && !isHtmlTagName(name) && !isAngularDirective(name)) {
@@ -170,6 +192,36 @@ module.exports = function(grunt) {
         }
       })
       parser.write(viewFile.content)
-    })
+    }
+    function processViews(views2) {
+      _(views2)
+      .filter(function(viewFilePath) {
+        return viewExists(viewFilePath)
+      }).map(function(viewFilePath) {
+        return getViewContent(viewFilePath)
+      })
+      .forEach(function(viewFile) {
+        parseViewFile(viewFile)
+      })
+    }
+    function processView(view) {
+      if(viewExists(view)) {
+        var viewFile = getViewContent(view)
+        parseViewFile(viewFile)
+      }
+    }
+    function processDirectories(directories) {
+      _(directories)
+      .forEach(function(viewDirectory) {
+        grunt.log.writeln('process: '+ viewDirectory )
+        grunt.file.recurse(viewDirectory, function(abspath, rootdir, subdir, filename) {
+          if(fileHasValidExtenion(filename)) {
+            processView(abspath)
+          }
+        })
+      })
+    }
+    processViews(viewFiles)
+    processDirectories(viewDirectories)
   })
 }

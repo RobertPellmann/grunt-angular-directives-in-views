@@ -54,6 +54,24 @@ module.exports = function(grunt) {
         options: {
           ignoreTags: ['dynamic']
         }
+      },
+      view_scan_directory_html: {
+        views: ['test/fixtures/views/'],
+        angular: ['test/fixtures/angular-directives.js']
+      },
+      view_scan_directory_cshtml: {
+        views: ['test/fixtures/views/'],
+        angular: ['test/fixtures/angular-directives.js'],
+        options: {
+          viewExtensions: ['html','cshtml']
+        }
+      },
+      view_scan_directory_all: {
+        views: ['test/fixtures/views/'],
+        angular: ['test/fixtures/angular-directives.js'],
+        options: {
+          viewExtensions: '*'
+        }
       }
     },
 

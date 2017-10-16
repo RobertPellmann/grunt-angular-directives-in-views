@@ -53,5 +53,21 @@ exports.angular_directives_in_views = {
     test.expect(1)
     test.equal(grunt.file.exists('tmp/view_ignore_invalid_tag'), false)
     test.done()
+  },
+  view_scan_directory_html: function(test) {
+    test.expect(1)
+    test.equal(grunt.file.exists('tmp/view_scan_directory_html'), false)
+    test.done()
+  },
+  view_scan_directory_cshtml: function(test) {
+    test.expect(1)
+    test.equal(grunt.file.exists('tmp/view_scan_directory_cshtml'), false)
+    test.done()
+  },
+  view_scan_directory_all: function(test) {
+    test.expect(1)
+    var actual = getNormalizedFile('tmp/view_scan_directory_all')
+    test.equal(actual, "unknown directive <hello-world-blub> in test/fixtures/views/view3.txt\r\n")
+    test.done()
   }
 }
