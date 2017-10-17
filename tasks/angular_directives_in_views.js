@@ -44,8 +44,20 @@ module.exports = function(grunt) {
   }
 
   function validateIgnoreTags(ignoreTags) {
+    if(ignoreTags === undefined) {
+      grunt.fail.warn('No tags are specified for option.ignoreTags. Remove the property if you do not wish to use it.')
+    }
     if(grunt.util.kindOf(ignoreTags) !== 'array') {
       grunt.fail.warn('options.ignoreTags must be a string array containing the tag names.')
+    }
+  }
+
+  function validateIgnorePatterns(ignorePatterns) {
+    if(ignorePatterns === undefined) {
+      grunt.fail.warn('No patterns are specified for option.ignorePatterns. Remove the property if you do not wish to use it.')
+    }
+    if(grunt.util.kindOf(ignorePatterns) !== 'array') {
+      grunt.fail.warn('options.ignorePatterns must be a string array containing the patterns')
     }
   }
 
@@ -111,9 +123,19 @@ module.exports = function(grunt) {
       }) !== undefined
     }
     function isIgnoredTag(name) {
-      return _.find(options.ignoreTags, function(tagName) {
+      var isIgnoredTag = _.find(options.ignoreTags, function(tagName) {
         return tagName == name
-      }) !== undefined
+      })
+      if(!isIgnoredTag && options.ignorePatterns.length > 0) {
+        return _.some(options.ignorePatterns, function(pattern){
+          var patternRegExp = new RegExp(pattern)
+          var regExpResult = patternRegExp.exec(name)
+          return regExpResult !== null
+        })
+      }
+      else {
+        return isIgnoredTag
+      }
     }
     function fileHasValidExtenion(fileName) {
       if(fileName !== undefined && fileName !== null && fileName !== '') {
@@ -141,7 +163,8 @@ module.exports = function(grunt) {
       suppressOutput: false,
       suppressOutputFile: false,
       ignoreTags: [],
-      viewExtensions: ['html']
+      viewExtensions: ['html'],
+      ignorePatterns: []
     })
     // check configuration
     validateViews(views, target)

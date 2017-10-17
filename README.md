@@ -134,6 +134,29 @@ grunt.initConfig({
 })
 ```
 
+#### options.ignorePatterns ###
+
+Type: `Array[String]`
+Default value: `[]`
+
+If you have tags that you can recognize by a pattern (regular expression) and you want to ignore those,
+you can tell the task to look out for those tags.
+For example if you know for a fact that a tag with a dot cannot possibly be a directive that you have defined, but belongs instead to a view engine (e.g. Razor, as a generic argument), you can add a dot matching regular expression.
+
+```js
+grunt.initConfig({
+  angular_directives_in_views: {
+    my_views: {
+        views: ['views/'],
+        angular: ['scripts/angular-directives.js'],
+        options: {
+          ignorePatterns: ['\\.']
+        }
+      }
+  }
+})
+```
+
 ### Important note ###
 
 If you want to use directories in the views argument, then the string MUST HAVE a trailing slash, e.g. views/
@@ -162,3 +185,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 | --- | --- | --- |
 | 16.10.2017 | 0.1.0 - 0.1.3 | First somewhat working version. |
 | 17.10.2017 | 0.1.4 | Ignore angular tags |
+| 17.10.2017 | 0.1.5 | Add option.ignorePatterns |

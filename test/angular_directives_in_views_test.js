@@ -51,36 +51,46 @@ exports.angular_directives_in_views = {
   },
   view_ignore_invalid_tag: function(test) {
     test.expect(1)
-    test.equal(grunt.file.exists('tmp/view_ignore_invalid_tag'), false)
+    test.ok(!grunt.file.exists('tmp/view_ignore_invalid_tag'))
     test.done()
   },
   view_scan_directory_html: function(test) {
     test.expect(1)
-    test.equal(grunt.file.exists('tmp/view_scan_directory_html'), false)
+    test.ok(!grunt.file.exists('tmp/view_scan_directory_html'))
     test.done()
   },
   view_scan_directory_cshtml: function(test) {
     test.expect(1)
     var actual = getNormalizedFile('tmp/view_scan_directory_cshtml')
-    test.ok(actual.indexOf('unknown directive <holla-world> in test/fixtures/views/subviews/subview.cshtml') > -1)
+    test.ok(actual.indexOf('unknown directive <holla-world> in test/fixtures/views/directory/subviews/subview.cshtml') > -1)
     test.done()
   },
   view_scan_directory_all: function(test) {
     test.expect(2)
     var actual = getNormalizedFile('tmp/view_scan_directory_all')
-    test.ok(actual.indexOf('unknown directive <hello-world-blub> in test/fixtures/views/view3.txt') > -1)
-    test.ok(actual.indexOf('unknown directive <holla-world> in test/fixtures/views/subviews/subview.cshtml') > -1)
+    test.ok(actual.indexOf('unknown directive <hello-world-blub> in test/fixtures/views/directory/view3.txt') > -1)
+    test.ok(actual.indexOf('unknown directive <holla-world> in test/fixtures/views/directory/subviews/subview.cshtml') > -1)
     test.done()
   },
   view_scan_sub_directory: function(test) {
     test.expect(1)
     var actual = getNormalizedFile('tmp/view_scan_sub_directory')
-    test.ok(actual.indexOf('unknown directive <holla-world> in test/fixtures/views/subviews/subview.cshtml') > -1)
+    test.ok(actual.indexOf('unknown directive <holla-world> in test/fixtures/views/directory/subviews/subview.cshtml') > -1)
     test.done()
   },
   view_angular: function(test) {
     test.expect(1)
-    test.ok(!grunt.file.exists('tmp/view_scan_directory_html'))
+    test.ok(!grunt.file.exists('tmp/view_angular'))
+    test.done()
+  },
+  view_with_dot: function(test) {
+    test.expect(1)
+    test.ok(!grunt.file.exists('tmp/view_with_dot'))
+    test.done()
+  },
+  view_with_dot_2: function(test) {
+    test.expect(1)
+    test.ok(grunt.file.exists('tmp/view_with_dot_2'))
     test.done()
   }
 }

@@ -56,28 +56,46 @@ module.exports = function(grunt) {
         }
       },
       view_scan_directory_html: {
-        views: ['test/fixtures/views/'],
+        views: ['test/fixtures/views/directory/'],
         angular: ['test/fixtures/angular-directives.js']
       },
       view_scan_directory_cshtml: {
-        views: ['test/fixtures/views/'],
+        views: ['test/fixtures/views/directory/'],
         angular: ['test/fixtures/angular-directives.js'],
         options: {
           viewExtensions: ['html','cshtml']
         }
       },
       view_scan_directory_all: {
-        views: ['test/fixtures/views/'],
+        views: ['test/fixtures/views/directory/'],
         angular: ['test/fixtures/angular-directives.js'],
         options: {
           viewExtensions: '*'
         }
       },
       view_scan_sub_directory: {
-        views: ['test/fixtures/views/'],
+        views: ['test/fixtures/views/directory/'],
         angular: ['test/fixtures/angular-directives.js'],
         options: {
           viewExtensions: ['cshtml']
+        }
+      },
+      view_angular: {
+        views: ['test/fixtures/views/angular.html'],
+        angular: ['test/fixtures/angular-directives.js']
+      },
+      view_with_dot: {
+        views: ['test/fixtures/views/view-with-dot.html'],
+        angular: ['test/fixtures/angular-directives.js'],
+        options: {
+          ignorePatterns: ['\\.']
+        }
+      },
+      view_with_dot_2: {
+        views: ['test/fixtures/views/view-with-dot.html'],
+        angular: ['test/fixtures/angular-directives.js'],
+        options: {
+          ignorePatterns: ['\\+']
         }
       }
     },
