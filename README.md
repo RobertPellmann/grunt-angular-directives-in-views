@@ -21,7 +21,7 @@ grunt.loadNpmTasks('grunt-angular-directives-in-views')
 
 ## Version ##
 
-0.1.3
+0.1.4
 
 ## The "angular_directives_in_views" task
 
