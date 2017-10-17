@@ -1,7 +1,7 @@
 {
-  "name": "angular-directives-in-views",
+  "name": "grunt-angular-directives-in-views",
   "description": "Scans .js files for angular directives to make sure directives in (html) views are defined. Only for angularjs 1.x",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "homepage": "https://github.com/RobertPellmann/grunt-angular-directives-in-views",
   "author": {
     "name": "Robert Pellmann",
