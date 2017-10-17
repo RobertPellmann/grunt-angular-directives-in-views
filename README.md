@@ -43,6 +43,12 @@ grunt.loadNpmTasks('grunt-angular-directives-in-views')
 grunt.registerTask('default', ['angular_directives_in_views'])
 ```
 
+### HTML and Angular Tags
+
+All HTML Tags defined in https://www.w3schools.com/tags/ and the Angular directives ng-view, ng-transclude, ng-include, ng-form, ng-app, ng-bind-html, ng-bind-template, ng-controller, ng-jq, ng-pluralize will be ignored. Furthermore directives that are used as attributes will not be found by this plugin.
+
+If you have tags that do not belong to neither HTML nor Angular, you can tell the plugin in the options to ignore them.
+
 ### Options
 
 #### options.suppressOutput
@@ -152,4 +158,7 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-16.10.2017: First somewhat working version.
+| Date | Version | Comment
+| --- | --- | --- |
+| 16.10.2017 | 0.1.0 - 0.1.3 | First somewhat working version. |
+| 17.10.2017 | 0.1.4 | Ignore angular tags |

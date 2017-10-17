@@ -13,6 +13,7 @@ module.exports = function(grunt) {
   var htmlparser = require("htmlparser2")
   // taken from https://www.w3schools.com/tags/
   var htmlTags = ['!DOCTYPE', 'a', 'abbr', 'acronym', 'address', 'applet', 'area', 'article', 'aside', 'autio', 'b', 'base', 'basefont', 'bdi', 'bdo', 'big', 'blockquote','body','br','button','canvas','caption','center','cite','code','col','colgroup','datalist','dd','del','details','dfn','dialog','dir','div','dl','dt','em','embed','fieldset','figcaption','figure','font','footer','form','frame','frameset','h1','h2','h3','h4','h5','h6','head','header','hr','html','i','iframe','img','input','ins','kbd','label','legend','li','link','main','map','mark','menu','menuitem','meta','meter','nav','noframes','noscript','object','ol','optgroup','option','output','p','picture','pre','progress','q','rp','rt','ruby','s','samp','script','section','select','small','source','span','strike','strong','style','sub','summary','sup','table','tbody','td','textarea','tfoot','th','thead','time','title','tr','track','tt','u','ul','var','video','wbr']
+  var angularTags = ['ng-view', 'ng-transclude', 'ng-include', 'ng-form', 'ng-app', 'ng-bind-html', 'ng-bind-template', 'ng-controller', 'ng-jq', 'ng-pluralize']
 
   function getNormalizedFile(filepath) {
     return grunt.util.normalizelf(grunt.file.read(filepath));
@@ -54,6 +55,16 @@ module.exports = function(grunt) {
     }) !== undefined
   }
 
+  function isAngularTagName(name) {
+    return _.find(angularTags, function(angularTag){
+      return angularTag == name
+    }) !== undefined
+  }
+
+  function isPredefinedTagName(name) {
+    return isHtmlTagName(name) || isAngularTagName(name)
+  }
+
   
   function normalizeDirectiveName(name) {
     var directiveNameRegex = /[a-z][a-z0-9]*|[A-Z][a-z0-9]*/g
@@ -75,7 +86,6 @@ module.exports = function(grunt) {
   function isDirectory(path) {
     if(path !== undefined && path !== null && path.length > 0) {
       var lastCharacterIsSlash = path[path.length - 1] == '/'
-      //grunt.log.writeln('path:' + path + ', isDirectory:' + lastCharacterIsSlash)
       return lastCharacterIsSlash
     }
     else {
@@ -182,15 +192,15 @@ module.exports = function(grunt) {
     function parseViewFile(viewFile) {
       var parser = new htmlparser.Parser({
         onopentag: function(name, attributes) {
-          if(!isIgnoredTag(name) && !isHtmlTagName(name) && !isAngularDirective(name)) {
+          if(!isIgnoredTag(name) && !isPredefinedTagName(name) && !isAngularDirective(name)) {
             errors.push('unknown directive <' + name + '> in ' + viewFile.file  + '\r\n')
           }
         }
       })
       parser.write(viewFile.content)
     }
-    function processViews(views2) {
-      _(views2)
+    function processViews(viewsFilePaths) {
+      _(viewsFilePaths)
       .filter(function(viewFilePath) {
         return viewExists(viewFilePath)
       }).map(function(viewFilePath) {

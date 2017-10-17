@@ -77,5 +77,10 @@ exports.angular_directives_in_views = {
     var actual = getNormalizedFile('tmp/view_scan_sub_directory')
     test.ok(actual.indexOf('unknown directive <holla-world> in test/fixtures/views/subviews/subview.cshtml') > -1)
     test.done()
+  },
+  view_angular: function(test) {
+    test.expect(1)
+    test.ok(!grunt.file.exists('tmp/view_scan_directory_html'))
+    test.done()
   }
 }
